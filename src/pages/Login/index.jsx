@@ -12,7 +12,7 @@ import { Navigate } from "react-router-dom";
 export const Login = () => {
   const isAuth = useSelector(selectIsAuth);
   const dispatch = useDispatch();
-  const {register, handleSubmit, setError, formState: {errors, isValid}} = useForm({
+  const {register, handleSubmit, formState: {errors, isValid}} = useForm({
     defaultValues: {
       email: 'test@test.ru',
       password: '123',
@@ -23,7 +23,7 @@ export const Login = () => {
   const onSubmit = async (values) => {
     const data = await dispatch(fetchAuth(values));
     if (!data.payload) {
-      alert('Faid to log in');
+      alert('Failed to log in');
     }
     if ('token' in data.payload) {
       window.localStorage.setItem('token', data.payload.token);
