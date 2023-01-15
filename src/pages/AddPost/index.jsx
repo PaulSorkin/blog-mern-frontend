@@ -51,7 +51,7 @@ export const AddPost = () => {
         title,
         imageUrl,
         //tags: tags.split(','),
-        tags: Array.from(tags.split(',')),
+        tags: Array.from(tags.split(',' || ' ')),      //ADD SPACE
         text
       };
       const { data } = isEditing ?
@@ -120,7 +120,7 @@ export const AddPost = () => {
           <Button variant="contained" color="error" onClick={onClickRemoveImage}>
             Delete
           </Button>
-          <img className={styles.image} src={`process.env.REACT_APP_API_URL/${imageUrl}`} alt="Uploaded" />
+          <img className={styles.image} src={`process.env.REACT_APP_API_URL${imageUrl}`} alt="Uploaded" />
         </>
       )}
       <br />
