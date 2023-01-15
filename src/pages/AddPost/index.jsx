@@ -9,7 +9,7 @@ import styles from './AddPost.module.scss';
 import { useSelector } from "react-redux";
 import { selectIsAuth } from "../../redux/slices/auth";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import axios from "../../axios";
+import axios, { imageApiInstance } from "../../axios";
 
 export const AddPost = () => {
   const { id } = useParams();
@@ -30,8 +30,8 @@ export const AddPost = () => {
       const formData = new FormData();
       const file = event.target.files[0];
       formData.append('image', file);
-      const { data } = await axios.post('/upload', formData);
-      setImageUrl(data.url);
+      const { data } = await imageApiInstance.post(null, formData);
+      setImageUrl(data.data.url);
     } catch (err) {
       console.warn(err);
       alert('Failed to upload');
@@ -120,7 +120,10 @@ export const AddPost = () => {
           <Button variant="contained" color="error" onClick={onClickRemoveImage}>
             Delete
           </Button>
-          <img className={styles.image} src={`process.env.REACT_APP_API_URL${imageUrl}`} alt="Uploaded" />
+          <img className={styles.image}
+               //src={`process.env.REACT_APP_API_URL${imageUrl}`}
+            src={imageUrl}
+               alt="Uploaded" />
         </>
       )}
       <br />
