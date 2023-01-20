@@ -3,10 +3,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 
-import { Post } from '../components/Post';
-import { TagsBlock } from '../components/TagsBlock';
-import { CommentsBlock } from '../components/CommentsBlock';
-import axios from "../axios";
+import { Post } from "../components";
+import { TagsBlock } from "../components";
+import { CommentsBlock } from "../components";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchPosts, fetchTags} from "../redux/slices/posts";
 
@@ -21,6 +20,7 @@ export const Home = () => {
     React.useEffect(() => {
         dispatch(fetchPosts());
         dispatch(fetchTags());
+        console.log(posts)              //DELETE!!!!
     }, [])
 
 
@@ -31,8 +31,8 @@ export const Home = () => {
         <Tab label="Popular" />
       </Tabs>
       <Grid container spacing={4}>
-        <Grid xs={8} item>
-          {(isPostsLoading ? [...Array(5)] : posts.items).map((obj, index) => isPostsLoading ?
+        <Grid md={8} sm={12} item>
+          {(isPostsLoading ? [...Array(5)] : posts.items.slice(0).reverse()).map((obj, index) => isPostsLoading ?
           <Post key={index} isLoading={true} />
           :
               (
@@ -51,7 +51,7 @@ export const Home = () => {
                   />
               ))}
         </Grid>
-        <Grid xs={4} item>
+        <Grid md={4} sm={0} item>
           <TagsBlock items={tags.items} isLoading={isTagsLoading} />
           <CommentsBlock
             items={[
