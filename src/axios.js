@@ -1,10 +1,11 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
+    baseURL: 'http://localhost:4444/',
 });
 
-const apiKey = process.env.REACT_APP_IMGBB_API_KEY;
+const apiKey = '3c65918522389da85e157de3edd67d2d';
+//const apiKey = process.env.REACT_APP_IMGBB_API_KEY;
 export const imageApiInstance = axios.create({
     baseURL: `https://api.imgbb.com/1/upload?key=${apiKey}`,
 });
