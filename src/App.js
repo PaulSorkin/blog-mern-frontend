@@ -6,10 +6,11 @@ import {Route, Routes} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
+import { PostsByTag } from "./pages/PostsByTag";
 
 function App() {
   const dispatch = useDispatch();
-  const isAuth = useSelector(selectIsAuth);
+  //const isAuth = useSelector(selectIsAuth);
 
   useEffect(() => {
     dispatch(fetchAuthMe())
@@ -21,6 +22,7 @@ function App() {
       <Container maxWidth="lg">
         <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='/tags/:tag' element={<PostsByTag />} />
             <Route path='/posts/:id' element={<FullPost />} />
             <Route path='/posts/:id/edit' element={<AddPost />} />
             <Route path='/add-post' element={<AddPost />} />
