@@ -1,13 +1,12 @@
-import React from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Grid from '@mui/material/Grid';
+import React from "react";
+import Tab from "@mui/material/Tab";
+import Grid from "@mui/material/Grid";
+import { TabContext, TabList } from "@mui/lab";
 
-import { Post } from "../components";
-import { TagsBlock } from "../components";
-import { CommentsBlock } from "../components";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchPosts, fetchTags} from "../redux/slices/posts";
+import { CommentsBlock, Post, TagsBlock } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPosts, fetchTags } from "../redux/slices/posts";
+import byField from "../utils/sortArrsUtil";
 
 export const Home = () => {
     const dispatch = useDispatch();
@@ -20,19 +19,30 @@ export const Home = () => {
     React.useEffect(() => {
         dispatch(fetchPosts());
         dispatch(fetchTags());
-        console.log(posts)              //DELETE!!!!
-    }, [])
+    }, []);
 
+    const sortPostsByDate = [...posts.items].sort(byField('updatedAt')).reverse();
+    const sortPostByViews = [...posts.items].sort(byField('viewsCount')).reverse();
+
+  // Tabs
+  const [value, setValue] = React.useState('New');
+  const sortedPosts = (value === "New" ? sortPostsByDate : sortPostByViews)
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <>
-      <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
-        <Tab label="New" />
-        <Tab label="Popular" />
-      </Tabs>
       <Grid container spacing={4}>
         <Grid md={8} sm={12} item>
-          {(isPostsLoading ? [...Array(5)] : posts.items.slice(0).reverse()).map((obj, index) => isPostsLoading ?
+          <TabContext value={value}>
+              <TabList style={{ marginBottom: 15 }} onChange={handleChange} aria-label="lab API tabs example">
+                <Tab label="New" value="New" />
+                <Tab label="Popular" value="Popular" />
+              </TabList>
+          </TabContext>
+          {(isPostsLoading ? [...Array(5)] : sortedPosts).map((obj, index) => isPostsLoading ?
           <Post key={index} isLoading={true} />
           :
               (
@@ -40,8 +50,6 @@ export const Home = () => {
                       id={obj._id}
                       title={obj.title}
                       imageUrl={obj.imageUrl ? obj.imageUrl : ''}
-                      //imageUrl={obj.imageUrl ? `process.env.REACT_APP_API_URL/${obj.imageUrl}` : ''}
-                      //imageUrl="https://res.cloudinary.com/practicaldev/image/fetch/s--UnAfrEG8--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/icohm5g0axh9wjmu4oc3.png"
                       user={obj.user}
                       createdAt={obj.createdAt}
                       viewsCount={obj.viewsCount}
