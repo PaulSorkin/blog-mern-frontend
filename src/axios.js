@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'http://localhost:4444/',
+      baseURL: process.env.REACT_APP_API_URL,
 });
 
 const apiKey = process.env.REACT_APP_IMGBB_API_KEY;
