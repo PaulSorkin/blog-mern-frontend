@@ -9,7 +9,7 @@ import styles from './AddPost.module.scss';
 import { useSelector } from "react-redux";
 import { selectIsAuth } from "../../redux/slices/auth";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import axios, { imageApiInstance } from "../../axios";
+import { instance, imageApiInstance } from "../../axios";
 
 export const AddPost = () => {
   const { id } = useParams();
@@ -55,8 +55,8 @@ export const AddPost = () => {
         text
       };
       const { data } = isEditing ?
-        (await axios.patch(`/posts/${id}`, fields)) :
-        (await axios.post('/posts', fields));
+        (await instance.patch(`/posts/${id}`, fields)) :
+        (await instance.post('/posts', fields));
 
       const _id = isEditing ? id : data._id;
       navigate(`/posts/${_id}`);
@@ -68,7 +68,7 @@ export const AddPost = () => {
 
   useEffect(() => {
     if (id) {
-      axios.get(`/posts/${id}`)
+      instance.get(`/posts/${id}`)
         .then(({ data }) => {
         setTitle(data.title);
         setText(data.text);
